@@ -1,0 +1,6 @@
+# Demo configuration for aigc
+server:
+  addr: ":8080"
+database:
+  path: "./demo_logs.db"
+
