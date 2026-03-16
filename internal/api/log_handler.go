@@ -17,8 +17,7 @@ func NewLogHandler(s *service.LogService) *LogHandler {
 	return &LogHandler{service: s}
 }
 
-// GET /api/v1/logs?limit=20
-func (h *LogHandler) GetLogs(c *gin.Context) {
+func (h *LogHandler) List(c *gin.Context) {
 	limitStr := c.Query("limit")
 	limit := 20
 	if limitStr != "" {
@@ -32,10 +31,4 @@ func (h *LogHandler) GetLogs(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, logs)
-}
-
-// List 兼容新的路由命名（handlers.LogHandler.List）
-func (h *LogHandler) List(c *gin.Context) {
-	// 复用 GetLogs 的实现
-	h.GetLogs(c)
 }
