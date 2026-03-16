@@ -12,7 +12,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.sublime-project
-*.sublime-workspace
+*workspace
 .classpath
 .project
 .settings/
