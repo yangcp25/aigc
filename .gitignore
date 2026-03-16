@@ -7,6 +7,7 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
+bin/*
 
 # IDE 相关
 .vscode/
