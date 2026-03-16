@@ -7,6 +7,12 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Conf 聚合了所有的配置
+type Conf struct {
+	Viper  *viper.Viper
+	Config *Config
+}
+
 // Config 简化的配置结构
 type Config struct {
 	DatabasePath string `mapstructure:"database.path"`
@@ -64,4 +70,8 @@ func ProvideConfig(v *viper.Viper) (*Config, error) {
 	return c, nil
 }
 
-var ProviderSet = wire.NewSet(ProvideViper, ProvideConfig)
+var ProviderSet = wire.NewSet(
+	ProvideViper,
+	ProvideConfig,
+	wire.Struct(new(Conf), "*"),
+)

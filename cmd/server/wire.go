@@ -16,12 +16,12 @@ import (
 )
 
 // ProvideHTTPServer 适配器：它不仅提取配置，还负责向 Wire 索要所有的 Handler，并完成路由组装
-func ProvideHTTPServer(c *conf.Config, logHandler *api.LogHandler) *httpsrv.Server {
+func ProvideHTTPServer(c *conf.Config, handlers *api.Handlers) *httpsrv.Server {
 	// 1. 初始化纯净的 Server
 	srv := httpsrv.New(c.ServerAddr)
 
-	// 2. 调用路由包，把拿到的 handler 挂载到 srv 上
-	router.RegisterRoutes(srv, logHandler)
+	// 2. 调用路由包，把拿到的 handlers 整包挂载到 srv 上
+	router.RegisterRoutes(srv, handlers)
 
 	// 3. 返回组装好的终极 Server
 	return srv

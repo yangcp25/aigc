@@ -33,3 +33,9 @@ func (h *LogHandler) GetLogs(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, logs)
 }
+
+// List 兼容新的路由命名（handlers.LogHandler.List）
+func (h *LogHandler) List(c *gin.Context) {
+	// 复用 GetLogs 的实现
+	h.GetLogs(c)
+}

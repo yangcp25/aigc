@@ -6,7 +6,7 @@ import (
 )
 
 // RegisterRoutes 核心组装逻辑：接收 Server 和所有的 Handler，完成挂载并返回装配好的 Server
-func RegisterRoutes(srv *httpsrv.Server, logHandler *api.LogHandler) *httpsrv.Server {
+func RegisterRoutes(srv *httpsrv.Server, handlers *api.Handlers) *httpsrv.Server {
 	engine := srv.Router()
 
 	// 可以在这里统一加全局跨域、JWT 鉴权等中间件
@@ -16,9 +16,9 @@ func RegisterRoutes(srv *httpsrv.Server, logHandler *api.LogHandler) *httpsrv.Se
 	v1 := engine.Group("/api/v1")
 	{
 		// 日志示例
-		logs := v1.Group("/logs")
+		logs := v1.Group("/log")
 		{
-			logs.GET("/", logHandler.GetLogs)
+			logs.GET("/list", handlers.LogHandler.List)
 		}
 
 		// 如果以后有用户系统，接着往下加

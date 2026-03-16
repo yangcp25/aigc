@@ -34,17 +34,20 @@ func InitApp() (*httpsrv.Server, error) {
 	logRepo := repo.NewSqliteLogRepo(sqlDB)
 	logService := service.NewLogService(logRepo)
 	logHandler := api.NewLogHandler(logService)
-	server := ProvideHTTPServer(config, logHandler)
+	handlers := &api.Handlers{
+		LogHandler: logHandler,
+	}
+	server := ProvideHTTPServer(config, handlers)
 	return server, nil
 }
 
 // wire.go:
 
 // ProvideHTTPServer 适配器：它不仅提取配置，还负责向 Wire 索要所有的 Handler，并完成路由组装
-func ProvideHTTPServer(c *conf.Config, logHandler *api.LogHandler) *httpsrv.Server {
+func ProvideHTTPServer(c *conf.Config, handlers *api.Handlers) *httpsrv.Server {
 
 	srv := httpsrv.New(c.ServerAddr)
-	router.RegisterRoutes(srv, logHandler)
+	router.RegisterRoutes(srv, handlers)
 
 	return srv
 }

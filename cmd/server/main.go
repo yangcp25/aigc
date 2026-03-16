@@ -6,6 +6,10 @@ import (
 )
 
 func main() {
+	// 1. 🌟 初始化全局基建日志
+	log.Init(log.Config{Level: "info", Format: "console"})
+	defer log.Sync()
+	
 	// 重点在这里：把里面的参数清空，变成 ()
 	app, err := InitApp()
 	if err != nil {

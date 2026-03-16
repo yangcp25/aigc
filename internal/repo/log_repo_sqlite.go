@@ -9,6 +9,11 @@ import (
 	"github.com/google/wire"
 )
 
+// Repos 聚合了所有的业务 Repo
+type Repos struct {
+	LogRepo LogRepo
+}
+
 // LogRepo 日志仓库接口
 type LogRepo interface {
 	Query(ctx context.Context, limit int) ([]*model.Log, error)
@@ -80,4 +85,7 @@ func (r *sqliteLogRepo) Query(ctx context.Context, limit int) ([]*model.Log, err
 	return out, rows.Err()
 }
 
-var ProviderSet = wire.NewSet(NewSqliteLogRepo)
+var ProviderSet = wire.NewSet(
+	NewSqliteLogRepo,
+	wire.Struct(new(Repos), "*"),
+)

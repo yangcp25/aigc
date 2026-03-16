@@ -17,6 +17,11 @@ func NewLogService(r repo.LogRepo) *LogService {
 	return &LogService{repo: r}
 }
 
+// Services 聚合了所有的业务 Service
+type Services struct {
+	LogService *LogService
+}
+
 func (s *LogService) QueryLogs(ctx context.Context, limit int) ([]*model.Log, error) {
 	if limit <= 0 {
 		limit = 20
@@ -24,4 +29,7 @@ func (s *LogService) QueryLogs(ctx context.Context, limit int) ([]*model.Log, er
 	return s.repo.Query(ctx, limit)
 }
 
-var ProviderSet = wire.NewSet(NewLogService)
+var ProviderSet = wire.NewSet(
+	NewLogService,
+	wire.Struct(new(Services), "*"),
+)
