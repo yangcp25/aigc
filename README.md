@@ -24,3 +24,22 @@ ai-pet-backend/
 ├── go.mod
 └── go.sum
 ```
+
+
+```
+aigc/
+├── cmd/
+│   └── server/          (main.go, wire.go)
+├── configs/             (配置文件)
+├── internal/
+│   ├── api/             (HTTP 接口层，收发 JSON)
+│   ├── worker/          (后台消费者层，收 Kafka 消息)
+│   ├── service/         (核心业务逻辑层，大脑)
+│   ├── repo/            (数据组装层，负责调度各种存储)
+│   ├── data/            (底层存储层：MySQL, Redis, ClickHouse, Kafka Producer)
+│   ├── conf/            (配置解析)
+│   └── middleware/      (Gin 中间件：跨域、JWT、Prometheus 拦截器)
+├── pkg/
+│   └── metrics/         (Prometheus 业务自定义打点池)
+└── go.mod
+```

@@ -9,3 +9,8 @@ type Log struct {
 	Level     string    `json:"level"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+// 👇 加上这个终极杀器，强制指定表名！
+func (Log) TableName() string {
+	return "log"
+}

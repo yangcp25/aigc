@@ -31,7 +31,7 @@ func InitApp() (*httpsrv.Server, error) {
 	panic(wire.Build(
 		// 0. 配置与 DB
 		conf.ProviderSet,
-		db.ProviderSet,
+		data.ProviderSet,
 
 		// 1. 底座 (使用适配器)
 		ProvideHTTPServer,

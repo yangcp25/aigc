@@ -27,11 +27,11 @@ func InitApp() (*httpsrv.Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	sqlDB, err := db.ProvideSQLDB(config)
+	dbDB, err := data.ProvideDB(config)
 	if err != nil {
 		return nil, err
 	}
-	logRepo := repo.NewSqliteLogRepo(sqlDB)
+	logRepo := repo.NewSqliteLogRepo(dbDB)
 	logService := service.NewLogService(logRepo)
 	logHandler := api.NewLogHandler(logService)
 	handlers := &api.Handlers{
