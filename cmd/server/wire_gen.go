@@ -9,7 +9,7 @@ package main
 import (
 	"aigc/internal/api"
 	"aigc/internal/conf"
-	"aigc/internal/db"
+	"aigc/internal/data"
 	"aigc/internal/repo"
 	"aigc/internal/router"
 	"aigc/internal/service"
@@ -27,11 +27,19 @@ func InitApp() (*httpsrv.Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	dbDB, err := data.ProvideDB(config)
+	db, err := data.NewDB(config)
 	if err != nil {
 		return nil, err
 	}
-	logRepo := repo.NewSqliteLogRepo(dbDB)
+	cache, err := data.ProvideRedisCache(config)
+	if err != nil {
+		return nil, err
+	}
+	dataData := &data.Data{
+		DB:    db,
+		Cache: cache,
+	}
+	logRepo := repo.NewSqliteLogRepo(dataData)
 	logService := service.NewLogService(logRepo)
 	logHandler := api.NewLogHandler(logService)
 	handlers := &api.Handlers{
@@ -46,7 +54,7 @@ func InitApp() (*httpsrv.Server, error) {
 // ProvideHTTPServer 适配器：它不仅提取配置，还负责向 Wire 索要所有的 Handler，并完成路由组装
 func ProvideHTTPServer(c *conf.Config, handlers *api.Handlers) *httpsrv.Server {
 
-	srv := httpsrv.New(c.ServerAddr)
+	srv := httpsrv.New(c.Server.Addr)
 	router.RegisterRoutes(srv, handlers)
 
 	return srv

@@ -7,7 +7,7 @@ package main
 import (
 	"aigc/internal/api"
 	"aigc/internal/conf"
-	"aigc/internal/db"
+	"aigc/internal/data"
 	"aigc/internal/repo"
 	"aigc/internal/router"
 	"aigc/internal/service"
@@ -18,7 +18,7 @@ import (
 // ProvideHTTPServer 适配器：它不仅提取配置，还负责向 Wire 索要所有的 Handler，并完成路由组装
 func ProvideHTTPServer(c *conf.Config, handlers *api.Handlers) *httpsrv.Server {
 	// 1. 初始化纯净的 Server
-	srv := httpsrv.New(c.ServerAddr)
+	srv := httpsrv.New(c.Server.Addr)
 
 	// 2. 调用路由包，把拿到的 handlers 整包挂载到 srv 上
 	router.RegisterRoutes(srv, handlers)
